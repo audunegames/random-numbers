@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `RandomNumberGenerator` constructor for seeds of type `int?` that defaults to the default seed.
 - Added methods to derive seeds by hasing them with a string key.
 
-## [1.0.0] - 2026-04-12
+## [1.0.0] - 2026-02-14
 
 ### Added
 
