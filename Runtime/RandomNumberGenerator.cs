@@ -80,7 +80,18 @@ namespace Audune.Utils.Random
       // Return the result
       return result;
     }
-
+    
+    #region Deriving random number generators
+    /// <summary>
+    /// Derives a new seeded random number generator by hashing the specified key with its seed.
+    /// </summary>
+    /// <param name="key">The key to hash the seed with.</param>
+    /// <returns>The derived seeded random number generator for the key.</returns>
+    public RandomNumberGenerator Derive(string key)
+    {
+      return new RandomNumberGenerator(DeriveSeed(seed, key));
+    }
+    #endregion
 
     #region Returning random values within a range
     /// <summary>
@@ -352,9 +363,9 @@ namespace Audune.Utils.Random
     }
     #endregion
   
-    #region Converting seeds
+    #region Converting and deriving seeds
     /// <summary>
-    /// Convert a seed string to an <c>int</c> to be usable when constructing a random number generator.
+    /// Converts a seed string to an <c>int</c> to be usable when constructing a random number generator.
     /// </summary>
     /// <param name="seedString">The string to convert.</param>
     /// <returns>The <c>int</c> value parsed from the string if any, or the hashed string value, or <c>null</c> if the string is empty.</returns>
@@ -373,6 +384,29 @@ namespace Audune.Utils.Random
       var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(seedString));
       return BitConverter.ToInt32(hash, 0);
     }
+    
+    #region Deriving seeds
+    /// <summary>
+    /// Derives a new seed by hashing the specified key with the seed.
+    /// </summary>
+    /// <param name="seed">The seed to hash.</param>
+    /// <param name="key">The key to hash the seed with.</param>
+    /// <returns>The derived seed for the key.</returns>
+    public static int DeriveSeed(int seed, string key)
+    {
+      unchecked
+      {
+        var hash = seed;
+        foreach (var c in key)
+        {
+          hash ^= c;
+          hash *= 1099511628;
+        }
+        
+        return hash;
+      }
+    }
+    #endregion
     #endregion
   }
 }
