@@ -41,6 +41,14 @@ namespace Audune.Utils.Random
       _randomState = UnityEngine.Random.state;
       UnityEngine.Random.state = originalState;
     }
+    
+    /// <summary>
+    /// Constructs a seeded random number generator with the specified seed, or the default seed if it is null.
+    /// </summary>
+    /// <param name="seed">The seed to use for the generator.</param>
+    public RandomNumberGenerator(int? seed) : this(seed ?? defaultSeed)
+    {
+    }
 
     /// <summary>
     /// Constructs a seeded random number generator with the default seed.
